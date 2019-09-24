@@ -1,0 +1,297 @@
+{% extends 'blog/base.html' %}
+{% load staticfiles %}
+{% block title %} ZLZ 个人博客{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-4 col-xs-12">
+                <div class="index-left-info my-panel">
+                    <div class="my-panel-body">
+                        <div class="index-left-img"
+                             style="background: url(/static/blog/img/person1.jpg);background-size: 100%;"></div>
+                        <div class="index-left-logo-box">
+                            <img src="/static/blog/img/person2.jpg" class=" index-left-logo" width="100" height="100">
+                        </div>
+                        <h4 class="text-center person_info">ZLZ</h4>
+                        <p class="text-center person_info">想做好编程
+                            <br>需要对它有一种偏执的喜爱
+                        </p>
+                        <table align="center" class="index-left-tab">
+                            <tbody>
+                            <tr>
+                                <td class="left">
+                                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                                    7226
+                                </td>
+                                <td class="right">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                    2531130
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                <div class="panel-heading">技术分类</div>
+                <div class="panel-body">
+                <ul class="list-group">
+                    {% for category in category_list %}
+                        <li class="list-group-item">
+                            <span class="badge">{{ category.count }}</span>
+                            <a href="">{{ category.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            </div>
+            </div>
+            <div class="col-md-6 col-sm-8 col-xs-12">
+                <div class="article_list">
+                    {% for article in article_list %}
+                        <div class="article-item small">
+                            <h5><a href="/article_detail/{{ article.pk }}">{{ article.title }}</a></h5>
+                            <div class="article-desc">
+                            <span class="media-left">
+                                <a href="/{{ article.user.username }}/"><img width="56" height="56"src="media/{{ article.user.avatar }}" alt=""></a>
+                            </span>
+                                <span class="media-right">
+                            {{ article.desc }}
+                        </span>
+                            </div>
+                            <div class="small pub_info">
+                                <span><a href="/{{ article.user.username }}/">{{ article.user.username }}</a></span>
+                                &nbsp;&nbsp;&nbsp;
+                                <span>发布于 &nbsp;&nbsp;{{ article.create_time|date:"Y-m-d H:i" }}</span>&nbsp;&nbsp;
+                                <span class="glyphicon glyphicon-comment"></span>评论({{ article.comment_count }})&nbsp;&nbsp;
+                                <span class="glyphicon glyphicon-thumbs-up"></span>点赞({{ article.up_count }})&nbsp;&nbsp;
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+
+                </div>
+                <ul id="pager" class="pagination">
+
+                    {% if article_list.has_previous %}
+                        <li class="previous"><a href="/index/?page={{ article_list.previous_page_number }}">上一页</a></li>
+                    {% else %}
+                        <li class="previous disabled"><a href="#">上一页</a></li>
+                    {% endif %}
+                    {% for num in pageRange %}
+
+                        {% if num == currentPage %}
+                            <li class="item active"><a href="/index/?page={{ num }}">{{ num }}</a></li>
+                        {% else %}
+                            <li class="item"><a href="/index/?page={{ num }}">{{ num }}</a></li>
+
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if article_list.has_next %}
+                        <li class="next"><a href="/index/?page={{ article_list.next_page_number }}">下一页</a></li>
+                    {% else %}
+                        <li class="next disabled"><a href="#">下一页</a></li>
+                    {% endif %}
+
+                </ul>
+            </div>
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="panel panel-info" style="margin-bottom: 30px">
+                    <div class="panel-heading">搜索</div>
+                    <div class="panel-body">
+                        <div class="input-group" style="margin-bottom: 10px">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn"><button class="btn btn-primary" type="button">找找看</button></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn"><button class="btn btn-primary" type="button">谷歌搜索</button></span>
+                        </div>
+                    </div></div>
+                <div id="calendar" style="margin: 0px 10px; margin-bottom: 30px">
+                    <table class="cal-title" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+                        <tbody>
+                        <tr>
+                            <td colspan="7">
+                                <table class="cal-title" cellspacing="0" border="0">
+                                    <tbody>
+                                    <tr>
+                                        <td class="CalNextPrev">
+                                            <a href="javascript:void(0);"
+                                               onclick="loadBlogCalendar('2019/07/20'); return false;">&lt;</a>
+                                        </td>
+                                        <td align="center">2019年8月</td>
+                                        <td align="right" class="CalNextPrev">
+                                            <a href="javascript:void(0);"
+                                               onclick="loadBlogCalendar('2019/09/20'); return false;">&gt;</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="CalDayHeader" align="center" abbr="日" scope="col">日</td>
+                            <td class="CalDayHeader" align="center" abbr="一" scope="col">一</td>
+                            <td class="CalDayHeader" align="center" abbr="二" scope="col">二</td>
+                            <td class="CalDayHeader" align="center" abbr="三" scope="col">三</td>
+                            <td class="CalDayHeader" align="center" abbr="四" scope="col">四</td>
+                            <td class="CalDayHeader" align="center" abbr="五" scope="col">五</td>
+                            <td class="CalDayHeader" align="center" abbr="六" scope="col">六</td>
+                        </tr>
+                        <tr>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                            <td class="" align="center">
+                                1
+                            </td>
+                            <td class="" align="center">
+                                2
+                            </td>
+                            <td class="CalWeekendDay" align="center">
+                                3
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="CalWeekendDay" align="center">
+                                4
+                            </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="CalWeekendDay" align="center">
+                                10
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="CalWeekendDay" align="center">
+                                11
+                            </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="CalWeekendDay" align="center">
+                                17
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="CalWeekendDay" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="CalWeekendDay" align="center">
+                                24
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="CalWeekendDay" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="CalWeekendDay" align="center">
+                                31
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel panel-info" style="margin-bottom: 30px">
+                    <div class="panel-heading">推荐文章</div>
+                    <div class="panel-body">
+                        <div style="padding: 0px 15px">
+                            <ul style="list-style-type:disc">
+                                <li><a>程序员实用工具网站</a></li>
+                                <li><a>技术人的写作之路</a></li>
+                                <li><a>你为什么成为一名程序员？</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

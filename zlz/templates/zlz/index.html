@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>测试</title>
+
+    <link rel="stylesheet" href="/static/zlz/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/zlz/css/custom.css"/>
+    <script src="/static/zlz/js/jquery-3.4.1.min.js"></script>
+    <script src="/static/zlz/js/bootstrap.min.js"></script>
+    <script src="/static/zlz/js/custom.js"></script>
+    <script src="/static/zlz/js/jquery.cookie.js"></script>
+</head>
+<body>
+    <div class="w_container">
+        <div class="container">
+            <div class="w_header">
+                <div class="w_header_branding">
+                    <h2>
+                        <a href="">测试</a>
+                    </h2>
+                </div>
+                <div class="w_header_menu">
+                    <span>
+                        <ul>
+                            <li><a href="" class="active">首页</a></li>
+                            <li><a href="">博客</a></li>
+                        </ul>
+				    </span>
+                </div>
+                <div class="w_header_usertools">
+                    <span>
+                        <ul>
+                            <li><a href="">登录</a></li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+            <div class="w_content">
+                <div class="w_content_search" >
+                    <div class="w_content_search_line">
+                        <div class="w_content_search_line_logo">
+                            <img src="https://gss0.bdstatic.com/5bVWsj_p_tVS5dKfpU_Y_D3/res/r/image/2017-09-26/352f1d243122cf52462a2e6cdcb5ed6d.png" class="w_content_search_line_img">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control input-lg w_content_search_line_input"/>
+                            <span class="input-group-addon btn btn-primary">百度一下</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">常用网址</div>
+                    <div class="panel-body">
+                        <ul class="w_content_url">
+                            <li class="w_content_url_li1"><a href="https://oa.cmcm.com/index_local.jsp" target="_blank">猎豹OA</a></li>
+                            <li class="w_content_url_li2"><a href="https://mail.google.com/mail/u/0/#inbox" target="_blank">猎豹邮箱</a></li>
+                            <li class="w_content_url_li3"><a href="https://drive.google.com/drive/u/1/my-drive" target="_blank">谷歌云盘</a></li>
+                            <li class="w_content_url_li4"><a href="https://github.com/" target="_blank">Github</a></li>
+                            <li class="w_content_url_li5"><a href="https://email.163.com/" target="_blank">163邮箱</a></li>
+                            <li class="w_content_url_li6"><a href="https://translate.google.cn/" target="_blank">谷歌翻译</a></li>
+                            <li class="w_content_url_li7"><a href="https://transfer.mediatek.com/login/form?returnurl=%2fDetail%2fReceived%2fMail30002570646" target="_blank">MTK FEX</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">AI人工智能图片放大</div>
+                    <div class="panel-body">
+                        <button class="btn btn-lg btn-success" onclick="javascript:document.getElementById('fileupload').click();">
+                            选择文件
+                            <input style="display:none;" id="fileupload" type="file" name="file" accept="image/*" multiple/>
+                        </button>
+                        <div id="files"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

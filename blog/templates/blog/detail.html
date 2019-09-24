@@ -1,0 +1,114 @@
+{% extends 'blog/base.html' %}
+{% load staticfiles %}
+{% block title %}文章详情{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/detail.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <div class="article-box">
+                <div class="article-header-box">
+                    <h1 class="article-header-title" style="padding-bottom: 20px">
+                        {{ article.title }}
+                    </h1>
+                    <div class="article-header-info" style="padding-bottom: 20px">
+                        <span>{{ article.user }}</span>
+
+                        <span style="margin-left: 15px">阅读数：999</span>
+
+                        <span style="position: absolute; right: 23px">文章创建于: {{ article.create_time }}</span>
+                    </div>
+                </div>
+                <article class="article-body-box">
+                    <div class="col-12 article-body" style="padding-bottom: 20px">
+                        {{ article.content|safe }}
+                    </div>
+                </article>
+                <div class="article-footer-box">
+                    <span>文章创建于: {{ article.create_time }}</span>
+                </div>
+            </div>
+            <div class="comment-box" style="padding: 16px 24px 8px; margin-bottom: 50px">
+                <div class="comment-edit-box">
+                    <form>
+                    <div style="display: flex; flex-direction: row;">
+                        <div style=" margin-right: 10px; display:block;">
+                            <a href="javascript:void(0);" target="_blank" rel="noopener">
+                                <img style="margin: 8px 0px; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #e0e0e0;"
+                                     src="/static/blog/img/anonymous-user.png">
+                            </a>
+                        </div>
+                        <div style="width: 100%;">
+                            <textarea id="comment_content" onfocusin="comment_edit_focusin()"
+                                      onfocusout="comment_edit_focusout()" onf
+                                      style="height: 38px; font-size: 14px; line-height: 22px;display: block; width: 100%; border: 1px solid #c1c1c1; border-radius: 4px; box-sizing: border-box; resize: none;"
+                                      placeholder="想对作者说点什么"></textarea>
+                        </div>
+                    </div>
+                    <div id="comment_submit"
+                         style="display: none; justify-content: space-between; width: 100%; height: 50px;">
+                        <div></div>
+                        <div style="display: flex; justify-content: flex-end; width: 220px; height: 34px; margin: 10px 0px 10px 15px">
+                            <div style="margin: 8px 15px 0px 0px;">
+                                <span>还能输入<em>996</em>个字符</span>
+                            </div>
+                            <input type="submit" class="btn btn-danger" value="发表评论">
+                        </div>
+                    </div>
+                </form>
+                </div>
+                <div class="comment-list-box">
+                    <ul class="comment-list" style="list-style: none;">
+                        <li style="margin: 15px 15px">
+                            <div  style="display: flex; flex-direction: row">
+                                <a><img src="/static/blog/img/anonymous-user.png" style="width: 25px; height: 25px; margin-right: 8px"></a>
+                                <div>
+                                    <div class="info-box"><a target="_blank" href="https://me.csdn.net/czc_gz"><span
+                                            class="name ">czc_gz：</span></a> <span class="comment">说好不哭</span><span
+                                            class="date" title="2019-09-23 18:13:28">(5分钟前</span><span
+                                            class="floor-num">#44楼)</span><span
+                                            class="opt-box"><a class="btn btn-link-blue btn-report"
+                                                               data-type="report">举报</a><a
+                                            class="btn btn-link-blue btn-reply" data-type="reply">回复</a></span></div>
+                                    <div class="comment-like " data-commentid="10611739">
+                                        <svg class="icon ">
+                                            <use xlink:href="#csdnc-thumbsup"></use>
+                                        </svg>
+                                        <span></span></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+
+        function comment_edit_focusin() {
+
+            let height = $('#comment_content').outerHeight();
+            if(height == 38) {
+                $('#comment_content').css('height', '80')
+                $('#comment_submit').css('display', 'flex')
+            }
+
+        }
+        function comment_edit_focusout() {
+
+            let width = $('#comment_content').outerHeight();
+            if(width == 80) {
+                $('#comment_content').css('height', '38')
+                $('#comment_submit').css('display', 'none')
+            }
+
+        }
+    </script>
+{% endblock %}
