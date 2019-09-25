@@ -11,6 +11,7 @@ admin.site.register(models.ConfirmString)
 admin.site.register(models.Article)
 admin.site.register(models.Article2Category)
 admin.site.register(models.Category)
+admin.site.register(models.Comment)
 
 # @admin.register(models.UserInfo)
 # class UserInfoAdmin(admin.ModelAdmin):

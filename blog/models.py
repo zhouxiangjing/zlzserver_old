@@ -2,6 +2,7 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 
+
 class User(models.Model):
 
     gender = (
@@ -12,6 +13,7 @@ class User(models.Model):
 
     username = models.CharField(max_length=128, unique=True)
     password = models.CharField(max_length=256)
+    avatar = models.CharField(max_length=256, default="")
     email = models.EmailField(unique=True)
     sex = models.IntegerField(choices=gender, default=0)
     create_time = models.DateTimeField(auto_now_add=True)
@@ -91,3 +93,20 @@ class Article2Category(models.Model):
         v = self.article.title + "---" + self.category.title
         return v
 
+
+class Comment(models.Model):
+
+    content = models.CharField(verbose_name='评论内容', max_length=255)
+    article = models.ForeignKey(verbose_name='文章ID', to="Article", to_field='id', on_delete=models.CASCADE)
+    user = models.ForeignKey(verbose_name='作者ID', to='User', to_field='id', on_delete=models.CASCADE)
+    level = models.IntegerField(verbose_name='评论级别', default=1)
+    parent_id = models.IntegerField(verbose_name='评论父级ID', default=0)
+    created = models.DateTimeField(verbose_name='发布时间', auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created']
+        verbose_name = '评论'
+        verbose_name_plural = '评论'
+
+    def __str__(self):
+        return self.content

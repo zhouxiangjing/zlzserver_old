@@ -5,14 +5,14 @@
     
     // 依赖文件生成与安装
     pip freeze > requirements.txt
-    pip install -r requirement.txt
-    
+    pip install -r requirement.txt      // 安装
+    pip install -Ur requirements.txt    // 安装
     // 项目管理
-    python manage.py startproject zlzserver
-    python manage.py startapp blog
-    python manage.py runserver
-    python manage.py collectstatic
-    python manage.py createsuperuser
+    python manage.py startproject zlzserver // 初始化项目
+    python manage.py startapp blog      // 创建APP
+    python manage.py runserver          // 开始运行项目
+    python manage.py collectstatic      // 收集静态文件
+    python manage.py createsuperuser    // 创建超级管理员
     
     //数据库管理
     python manage.py makemigrations     // 迁移数据库

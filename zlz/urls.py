@@ -7,8 +7,8 @@ from zlz import restapi as zlz_restapi
 
 urlpatterns = [
 
-    path('', zlz_views.index, name='index'),
-    path('media/', zlz_views.media),
-
-    path('api/devices/', zlz_restapi.DevicesAPIView.as_view()),
+    # path('', zlz_views.index, name='index'),
+    # path('media/', zlz_views.media),
+    #
+    # path('api/devices/', zlz_restapi.DevicesAPIView.as_view()),
 ]

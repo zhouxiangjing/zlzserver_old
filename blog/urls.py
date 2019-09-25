@@ -1,8 +1,14 @@
 from django.urls import path, include
 from blog import views as blog_views
+from blog import restapi
 from django.views.generic.base import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework import routers
+
+router = routers.DefaultRouter() # 开发环境用，有主界面
+# router = routers.SimpleRouter() # 生产环境用
+router.register(r'comment', restapi.CommentViewSet)
 
 urlpatterns = [
 
@@ -24,5 +30,6 @@ urlpatterns = [
     # path('index/', blog_views.index, name='index'),
     # path('register/', blog_views.register),
 ]
-
+urlpatterns += router.urls
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

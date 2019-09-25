@@ -4,7 +4,7 @@ import os
 import json
 
 from django.http import JsonResponse
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db import transaction
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models.aggregates import Count
@@ -111,9 +111,15 @@ def index(request):
 
 def login(request):
     if request.session.get('is_login', None):
-        return redirect('/index')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-    if request.method == "POST":
+    if request.method == "GET":
+        login_from = request.META.get('HTTP_REFERER', '/')
+        if '/login' not in login_from:
+            request.session['login_from'] = login_from
+        login_form = UserForm()
+        return render(request, 'blog/login.html', locals())
+    elif request.method == "POST":
         login_form = UserForm(request.POST)
         message = "请检查填写的内容！"
         if login_form.is_valid():
@@ -128,15 +134,12 @@ def login(request):
                     request.session['is_login'] = True
                     request.session['user_id'] = user.id
                     request.session['user_name'] = user.username
-                    return redirect('/index/')
+                    return HttpResponseRedirect(request.session['login_from'])
                 else:
                     message = "密码不正确！"
             except:
                 message = "用户不存在！"
         return render(request, 'blog/login.html', locals())
-
-    login_form = UserForm()
-    return render(request, 'blog/login.html', locals())
 
 
 def register(request):
@@ -185,17 +188,19 @@ def register(request):
 
 def logout(request):
     if not request.session.get('is_login', None):
-        return redirect("/index/")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+    login_from = request.META.get('HTTP_REFERER', '/')
     request.session.flush()
-    return redirect("/index/")
+    return HttpResponseRedirect(login_from)
 
 
 def article_detail(request, id):
 
-    article = Article.objects.get(id=id)
+    articles = Article.objects.get(id=id)
+    comments = Comment.objects.filter(article_id=id)
 
-    return render(request, 'blog/detail.html', { 'article': article })
-
+    return render(request, 'blog/detail.html', { 'articles': articles, 'comments': comments})
 
 
 
