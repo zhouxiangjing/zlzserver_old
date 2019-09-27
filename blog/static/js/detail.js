@@ -51,16 +51,31 @@ $(document).ready(function () {
                 alert('请输入评论');
 
             } else {
-                console.log("comment_content : " + comment_content)
 
-                let formData = new FormData();
-                formData.append('file', v)
+                let comment_api = event.data.comment_api
+
+                let article = parseInt(event.data.article_id)
+                let user = parseInt(event.data.user_id)
+                let comment_content = $('#comment_content').val()
+                let comment_level = 1
+                let comment_parent_id = 0
+
+                let form_data = new FormData();
+                form_data.append('article', article)
+                form_data.append('user', user)
+                form_data.append('content', comment_content)
+                form_data.append('level', comment_level)
+                form_data.append('parent_id', comment_parent_id)
+
+                for (let value of form_data.values()) {
+                    console.log(value);
+                }
 
                 $.ajax({
-                    url: '/media/',
+                    url: comment_api,
                     type: 'POST',
                     cache: false,
-                    data: formData,
+                    data: form_data,
                     processData: false,
                     contentType: false
                 }).done(function (res) {

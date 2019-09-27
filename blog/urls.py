@@ -29,7 +29,10 @@ urlpatterns = [
     # path('', blog_views.index, name='index'),
     # path('index/', blog_views.index, name='index'),
     # path('register/', blog_views.register),
+
+    path('api/', include(router.urls))
+    # path('api/', include((router.urls, 'api'), namespace='api'))
 ]
-urlpatterns += router.urls
+
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -15,23 +15,23 @@
             <div class="article-box">
                 <div class="article-header-box">
                     <h1 class="article-header-title" style="padding-bottom: 20px">
-                        {{ articles.title }}
+                        {{ article.title }}
                     </h1>
                     <div class="article-header-info" style="padding-bottom: 20px">
-                        <span>{{ articles.user }}</span>
+                        <span>{{ article.user }}</span>
 
                         <span style="margin-left: 15px">阅读数：999</span>
 
-                        <span style="position: absolute; right: 23px">文章创建于: {{ articles.create_time }}</span>
+                        <span style="position: absolute; right: 23px">文章创建于: {{ article.create_time }}</span>
                     </div>
                 </div>
                 <article class="article-body-box">
                     <div class="col-12 article-body" style="padding-bottom: 20px">
-                        {{ articles.content|safe }}
+                        {{ article.content|safe }}
                     </div>
                 </article>
                 <div class="article-footer-box">
-                    <span>文章创建于: {{ articles.create_time }}</span>
+                    <span>文章创建于: {{ article.create_time }}</span>
                 </div>
             </div>
 
@@ -76,11 +76,11 @@
                             </div>
                             <div style="width: 100%; height: auto; margin-right: 8px; display:flex; flex-direction:column;">
                                 <div style="width: 100%; padding-bottom: 8px;">
-                                    <a target="_blank" href="">{{ comment.user_id }}</a>
+                                    <a target="_blank" href="">{{ comment.user }}</a>
                                     : {{ comment.content }}
                                 </div>
                                 <div style="width: 100%; height: 22px; padding-bottom: 8px; display:flex; justify-content: space-between;">
-                                    <div>{{ comment.created }}</div>
+                                    <div style="font-size: 13px; color: gainsboro">{{ comment.created }}</div>
                                     <div>
                                         <ul>
                                             <li style="float: left; padding: 0px 10px;"><a>回复</a></li>
@@ -93,7 +93,6 @@
                         </div>
                     {% endfor %}
 
-
                 </div>
             </div>
         </div>
@@ -101,7 +100,12 @@
 </div>
 
 <script>
-    let data = {is_logined: "{{ request.session.user_id }}"}
+    let data = {
+        is_logined: "{{ request.session.user_id }}",
+        article_id: "{{ article_id }}",
+        user_id: "{{ article.user_id }}",
+        comment_api: "{{ comment_api }}",
+    }
 </script>
 
 {% endblock %}

@@ -197,10 +197,17 @@ def logout(request):
 
 def article_detail(request, id):
 
-    articles = Article.objects.get(id=id)
+    article = Article.objects.get(id=id)
     comments = Comment.objects.filter(article_id=id)
 
-    return render(request, 'blog/detail.html', { 'articles': articles, 'comments': comments})
+    response_data = {
+        'article_id': id,
+        'article': article,
+        'comments': comments,
+        'comment_api': '/api/comment/',
+    }
+
+    return render(request, 'blog/detail.html', response_data)
 
 
 
