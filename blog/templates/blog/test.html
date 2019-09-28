@@ -4,24 +4,62 @@
     <meta charset="UTF-8">
     <title>测试</title>
 
-    <style>
-        .textarea-inherit {
-            width: 100%;
-            overflow: auto;
-            word-break: break-all;
-        }
-    </style>
-
 </head>
 <body>
     <p id="p1">鼠标指针进入此处，会看到弹窗。</p>
 
     <script>
-        $(document).ready(function () {
-            $("#p1").mouseenter(function () {
-                alert('您的鼠标移到了 id="p1" 的元素上!');
-            });
-        });
+
+
+
+        function rettest_test() {
+            document.write('RegExp test\r');
+            let reg = new RegExp(/\d{4}/);
+            let str1 = "myPhoneID10086";
+            let flag = reg.test(str1);
+            document.write(flag);
+        }
+
+        function rettest_match() {
+            let str2 = "中国移动:10086,中国联通:10010,中国电信:10000";
+            let array = str2.match(/\d{5}/g);
+
+            document.write(array);
+        }
+
+        function rettest_replace() {
+
+            let reg = new RegExp(/[h]/gi);
+            let str = "HhpsphH";
+            str = str.replace(reg, "S");
+
+            document.write(str);
+        }
+
+
+
+        function retest_re() {
+
+            var str = "this is test string <img src='http:yourweb.com/test.jpg' width='50' > 123 and the end <img src='所有地址也能匹配.jpg' /> 33! <img src='/uploads/attached/image/20120426/20120426225658_92565.png' alt=\"\" />"
+            var imgReg = /<img.*?(?:>|\/>)/gi;
+            var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+            var arr = str.match(imgReg);
+            console.log(arr);
+            for (var i = 0; i < arr.length; i++) {
+                var src = arr[i].match(srcReg);
+                //获取图片地址
+                if (src[1]) {
+                    console.log('已匹配的图片地址' + (i + 1) + '：' + src[1]);
+                }
+
+            }
+        }
+
+        retest_re()
+
+
+
+
     </script>
 </body>
 </html>

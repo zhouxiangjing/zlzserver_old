@@ -22,7 +22,7 @@
 
                         <span style="margin-left: 15px">阅读数：999</span>
 
-                        <span style="position: absolute; right: 23px">文章创建于: {{ article.create_time }}</span>
+                        <span style="position: absolute; right: 23px">文章创建于: {{ article.create_time|date:"Y-m-d H:i" }}</span>
                     </div>
                 </div>
                 <article class="article-body-box">
@@ -31,7 +31,7 @@
                     </div>
                 </article>
                 <div class="article-footer-box">
-                    <span>文章创建于: {{ article.create_time }}</span>
+                    <span>文章创建于: {{ article.create_time|date:"Y-m-d H:i" }}</span>
                 </div>
             </div>
 
