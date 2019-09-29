@@ -1,65 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>测试</title>
-
+    <meta charset=utf-8>
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <title>frontend</title>
+    <link href=/static/css/app.1e677ff687e3bc4bffdacf66eeec33b1.css rel=stylesheet>
 </head>
 <body>
-    <p id="p1">鼠标指针进入此处，会看到弹窗。</p>
-
-    <script>
-
-
-
-        function rettest_test() {
-            document.write('RegExp test\r');
-            let reg = new RegExp(/\d{4}/);
-            let str1 = "myPhoneID10086";
-            let flag = reg.test(str1);
-            document.write(flag);
-        }
-
-        function rettest_match() {
-            let str2 = "中国移动:10086,中国联通:10010,中国电信:10000";
-            let array = str2.match(/\d{5}/g);
-
-            document.write(array);
-        }
-
-        function rettest_replace() {
-
-            let reg = new RegExp(/[h]/gi);
-            let str = "HhpsphH";
-            str = str.replace(reg, "S");
-
-            document.write(str);
-        }
-
-
-
-        function retest_re() {
-
-            var str = "this is test string <img src='http:yourweb.com/test.jpg' width='50' > 123 and the end <img src='所有地址也能匹配.jpg' /> 33! <img src='/uploads/attached/image/20120426/20120426225658_92565.png' alt=\"\" />"
-            var imgReg = /<img.*?(?:>|\/>)/gi;
-            var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
-            var arr = str.match(imgReg);
-            console.log(arr);
-            for (var i = 0; i < arr.length; i++) {
-                var src = arr[i].match(srcReg);
-                //获取图片地址
-                if (src[1]) {
-                    console.log('已匹配的图片地址' + (i + 1) + '：' + src[1]);
-                }
-
-            }
-        }
-
-        retest_re()
-
-
-
-
-    </script>
+<div id=app></div>
+<script type=text/javascript src=/static/js/manifest.2ae2e69a05c33dfc65f8.js></script>
+<script type=text/javascript src=/static/js/vendor.b0faa03d15c2beafdaa7.js></script>
+<script type=text/javascript src=/static/js/app.24b192705e4827a7a3ff.js></script>
 </body>
 </html>
