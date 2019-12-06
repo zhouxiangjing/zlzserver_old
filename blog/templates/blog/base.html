@@ -38,8 +38,10 @@
                     <li><a><span class="glyphicon glyphicon-user">&nbsp;{{ request.session.user_name }}</span></a></li>
                     <li><a href="/logout/"><span class="glyphicon glyphicon-log-out">&nbsp;退出</span></a></li>
                 {% else %}
-                    <li><a href="/login/"><span class="glyphicon glyphicon-log-in">&nbsp;登录</span></a></li>
-                    <li><a href="/register/"><span class="glyphicon glyphicon-oil">&nbsp;注册</span></a></li>
+{#                    <li id="authentication"><a><span class="glyphicon glyphicon-log-in">&nbsp;登录/注册</span></a></li>#}
+                    <li><a href="/authentication/"><span class="glyphicon glyphicon-log-in">&nbsp;登录/注册</span></a></li>
+{#                    <li><a href="/login/"><span class="glyphicon glyphicon-log-in">&nbsp;登录</span></a></li>#}
+{#                    <li><a href="/register/"><span class="glyphicon glyphicon-oil">&nbsp;注册</span></a></li>#}
                 {% endif %}
             </ul>
         </div>
@@ -51,7 +53,7 @@
 {% block content %}{% endblock %}
 
 <script src="{% static 'js/jquery-3.4.1.js' %}"></script>
-<script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.js' %}"></script>
 <script src="{% static 'js/jquery.cookie.js' %}"></script>
 
 {% block custom_js %}{% endblock %}

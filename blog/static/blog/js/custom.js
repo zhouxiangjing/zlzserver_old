@@ -153,6 +153,11 @@ $(document).ready(function () {
         $('#modal_register').modal('show');
     });
 
+    $('#authentication').click(function () {
+        console.log("zzz")
+        window.alert("zxj")
+    });
+
     $('#submit_register').click(function () {
 
         let username = $.trim($('#username').val());

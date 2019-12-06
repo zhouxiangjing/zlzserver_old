@@ -16,7 +16,9 @@ from bs4 import BeautifulSoup
 from zlzserver.settings import BASE_DIR
 import hashlib
 import datetime
-
+import time
+import re
+from django.utils import timezone
 
 def hash_code(s, salt='zlz'):# 加点盐
     h = hashlib.sha256()
@@ -107,6 +109,38 @@ def index(request):
                    'category_list': category_list,
                    'paginator': paginator,
                    'pageRange': page_range})
+
+
+def authentication(request):
+    if request.session.get('is_login', None):
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+    if request.method == "GET":
+        auth_from = request.META.get('HTTP_REFERER', '/')
+        if '/authentication' not in auth_from:
+            request.session['auth_from'] = auth_from
+        return render(request, 'blog/authentication.html', locals())
+    elif request.method == "POST":
+        auth_from = UserForm(request.POST)
+        message = "请检查填写的内容！"
+        if auth_from.is_valid():
+            phone = auth_from.cleaned_data['phone']
+            captcha = auth_from.cleaned_data['captcha']
+
+            d1 = timezone.datetime.fromtimestamp(timezone.datetime.now().timestamp() - 60)
+            d2 = timezone.datetime.now()
+            sms_code = SmsCode.objects.filter(phone=phone, code=captcha, updated__range=(d1, d2)).first()
+            if sms_code:
+                user = User.objects.update_or_create(phone=phone)
+                if len(user) > 0:
+                    request.session['is_login'] = True
+                    request.session['user_id'] = user[0].id
+                    request.session['user_name'] = user[0].username
+                    return HttpResponseRedirect(request.session['auth_from'])
+            else:
+                message = "验证码不存在或者已过期！"
+
+    return render(request, 'blog/authentication.html', locals())
 
 
 def login(request):
@@ -210,90 +244,27 @@ def article_detail(request, id):
     return render(request, 'blog/detail.html', response_data)
 
 
+def sendsms(request):
 
-
-
-
-# def index(request):
-#
-#     article_list = Article.objects.order_by('pk').all().reverse()
-#     category_list = list(Category.objects.annotate(count=Count('article')))
-#     pageRange, paginator, article_list = my_paginator(request, article_list)
-#
-#     if request.method == 'POST':
-#         if request.POST:
-#             username = request.POST.get('username', '')
-#             nn = 0
-#
-#         return render(request, 'blog/index.html',
-#                       {'article_list': article_list,
-#                        'category_list': category_list,
-#                        'paginator': paginator,
-#                        'pageRange': pageRange})
-#
-#     return render(request, 'blog/index.html',
-#                   {'article_list': article_list,
-#                    'category_list': category_list,
-#                    'paginator': paginator,
-#                    'pageRange': pageRange})
-#
-#
-# def login(request):
-#     if request.method == "POST":
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#
-#         user = UserInfo.objects.filter(username=username, password=password)
-#         print(user)
-#         print(user)
-#         if user:
-#             #登录成功
-#             # 1，生成特殊字符串
-#             # 2，这个字符串当成key，此key在数据库的session表（在数据库存中一个表名是session的表）中对应一个value
-#             # 3，在响应中,用cookies保存这个key ,(即向浏览器写一个cookie,此cookies的值即是这个key特殊字符）
-#             request.session['is_login']='1'  # 这个session是用于后面访问每个页面（即调用每个视图函数时要用到，即判断是否已经登录，用此判断）
-#             # request.session['username']=username  # 这个要存储的session是用于后面，每个页面上要显示出来，登录状态的用户名用。
-#             # 说明：如果需要在页面上显示出来的用户信息太多（有时还有积分，姓名，年龄等信息），所以我们可以只用session保存user_id
-#             request.session['user_id']=user[0].id
-#             return redirect('/index/')
-#
-# def register(request):
-#
-#     ret_code = 200
-#     error_msg = 'ok'
-#     if request.method == 'POST':
-#         if request.POST:
-#             username = request.POST.get('username', '')
-#             password = request.POST.get('password', '')
-#             re_password = request.POST.get('re_password', '')
-#             sex = request.POST.get('sex', '')
-#             birthday = request.POST.get('birthday', '')
-#             phone = request.POST.get('phone', '')
-#             email = request.POST.get('email', '')
-#
-#             while True:
-#                 if password != re_password:
-#                     error_msg = '密码不一致'
-#                     break
-#
-#                 user = UserInfo.objects.filter(username=username).first()
-#                 if user:
-#                     error_msg = '该用户名已被注册'
-#                     break
-#
-#                 break
-#
-#             UserInfo.objects.create(username=username,
-#                 password=password,
-#                 sex=sex,
-#                 birthday=birthday,
-#                 telephone=phone,
-#                 email=email)
-#
-#             ret_data = {'ret_code': ret_code, 'error_msg': error_msg, 'username': username}
-#
-#             return HttpResponse(json.dumps(ret_data, ensure_ascii=False),
-#                                 content_type='application/json; charset=utf-8')
-#
-#     return HttpResponse(json.dumps({'ret_code': ret_code, 'error_msg': error_msg}, ensure_ascii=False),
-#                         content_type='application/json; charset=utf-8')
+    if request.method == "POST":
+        try:
+            phone = request.POST.get('phone')
+            phone_re = re.compile('^1[3-9]\d{9}$')
+            re_res = re.search(phone_re, phone)
+            if re_res:
+                sms_code = ran_number(6)
+                # sendret = send_sms(phone, sms_code)
+                sendret = 'OK'
+                # {"Message":"OK","RequestId":"CD8C0912-4EBB-4BC5-AADE-ACB6B8BE9972","BizId":"413404475602605790^0","Code":"OK"}
+                if sendret == "OK":
+                    sms = SmsCode.objects.update_or_create(phone=phone, defaults={
+                        'code': sms_code,
+                        'updated': timezone.now()
+                    })
+                    if len(sms) > 0:
+                        return JsonResponse({'ok': 1, 'code': 200})
+            else:
+                return JsonResponse({'ok': 0, 'code': 500, 'msg': '手机号码格式错误！'})
+        except Exception as e:
+            print(e)
+        return JsonResponse({'ok': 0, 'code': 500, 'msg': '短信验证码发送失败'})

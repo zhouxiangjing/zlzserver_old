@@ -129,6 +129,50 @@
         </div>
     </div>
 
+    <!-- 登录模态框 -->
+    <div class="modal fade" id="modal_login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" >
+        <div class="modal-dialog" style="max-width: 450px;">
+            <div class="modal-content">
+                <div class="modal-header" style="border: none">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+{#                    <h4 class="modal-title" id="myModalLabel">登录</h4>#}
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-sm-offset-2 col-sm-8 col-xs-offset-2 col-xs-8">
+                            <div style="width: 150px; height: 150px; background-color: #0f0f0f; margin: 0px auto 20px">
+                                <img src=/static/blog/img/zlz.png style="width: 100%; height: 100%">
+                            </div>
+
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="login_username" placeholder="手机号"
+                                           required="required">
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="login_password"
+                                               placeholder="验证码"
+                                               required="required">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button">获取验证码</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block">登录/注册</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block custom_js %}
@@ -136,5 +180,5 @@
     <script>
         $('#mycalendar').dcalendar();
     </script>
-
+    <script src="{% static 'blog/js/index.js' %}"></script>
 {% endblock %}

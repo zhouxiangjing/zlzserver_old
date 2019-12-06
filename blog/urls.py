@@ -18,6 +18,8 @@ urlpatterns = [
 
     path('', blog_views.index),
     path('index/', blog_views.index),
+    path('authentication/', blog_views.authentication),
+    path('sendsms/', blog_views.sendsms),
     path('login/', blog_views.login),
     path('register/', blog_views.register),
     path('logout/', blog_views.logout),

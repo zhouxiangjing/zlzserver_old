@@ -1,29 +1,38 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
+from blog.utils import *
 
 
 class User(models.Model):
 
-    gender = (
+    gender_val = (
         (0, "保密"),
         (1, "男"),
         (2, "女"),
     )
 
-    username = models.CharField(max_length=128, unique=True)
-    password = models.CharField(max_length=256)
-    avatar = models.CharField(max_length=256, default="")
-    email = models.EmailField(unique=True)
-    sex = models.IntegerField(choices=gender, default=0)
-    create_time = models.DateTimeField(auto_now_add=True)
-    has_confirmed = models.BooleanField(default=False)
+    role_val = (
+        (0, "普通会员"),
+        (1, "管理员"),
+    )
+
+    id = models.CharField(primary_key=True, max_length=50, default=next_id)
+    phone = models.CharField(verbose_name='手机号', max_length=128)
+    username = models.CharField(verbose_name='用户名', max_length=128, default=get_name)
+    password = models.CharField(verbose_name='密码', max_length=128, default="")
+    avatar = models.CharField(verbose_name='头像', max_length=256, default="")
+    email = models.EmailField(verbose_name='邮箱', max_length=256, default="")
+    gender = models.IntegerField(verbose_name='性别', choices=gender_val, default=0)
+    role = models.IntegerField(verbose_name='角色', choices=role_val, default=0)
+    created = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
+    updated = models.DateTimeField(verbose_name='更新时间', auto_now_add=True)
 
     def __str__(self):
         return self.username
 
     class Meta:
-        ordering = ["-create_time"]
+        ordering = ["-created"]
         verbose_name = "用户"
         verbose_name_plural = "用户"
 
@@ -31,16 +40,31 @@ class User(models.Model):
 class ConfirmString(models.Model):
     code = models.CharField(max_length=256)
     user = models.OneToOneField('User', on_delete=False)
-    create_time = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.name + ":   " + self.code
 
     class Meta:
 
-        ordering = ["-create_time"]
+        ordering = ["-created"]
         verbose_name = "确认码"
         verbose_name_plural = "确认码"
+
+
+class SmsCode(models.Model):
+    phone = models.CharField(max_length=128)
+    code = models.CharField(max_length=128)
+    updated = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.name + ":   " + self.code
+
+    class Meta:
+
+        ordering = ["-updated"]
+        verbose_name = "验证码"
+        verbose_name_plural = "验证码"
 
 
 class Article(models.Model):
@@ -54,8 +78,8 @@ class Article(models.Model):
     down_count = models.IntegerField(verbose_name='踩踩数', default=0)
 
     user = models.ForeignKey(verbose_name='作者', to='User', to_field='id', on_delete=models.CASCADE)
-    create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
-    update_time = models.DateTimeField(verbose_name='更新时间', auto_now_add=True)
+    created = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
+    updated = models.DateTimeField(verbose_name='更新时间', auto_now_add=True)
     category = models.ManyToManyField(verbose_name='分类', to='Category', through='Article2Category', through_fields=('article', 'category'))
 
     def __str__(self):

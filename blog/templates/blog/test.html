@@ -4,12 +4,53 @@
     <meta charset=utf-8>
     <meta name=viewport content="width=device-width,initial-scale=1">
     <title>frontend</title>
-    <link href=/static/css/app.1e677ff687e3bc4bffdacf66eeec33b1.css rel=stylesheet>
+
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
+
 <body>
-<div id=app></div>
-<script type=text/javascript src=/static/js/manifest.2ae2e69a05c33dfc65f8.js></script>
-<script type=text/javascript src=/static/js/vendor.b0faa03d15c2beafdaa7.js></script>
-<script type=text/javascript src=/static/js/app.24b192705e4827a7a3ff.js></script>
+
+<h1>Hello</h1>
+
+
+<script src="https://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        function test(str) {
+
+            var tmp1 = str.match("/\d\w+\d/g");
+            console.log(str.match("/\d\w+\d/g"));
+        }
+
+
+        function rot13(str) { // LBH QVQ VG!
+            // 请把你的代码写在这里
+
+            var tmp1 = str.replace(/[a-zA-Z]/g, function ($0) {
+
+                var tmp2 = $0.charCodeAt() + 13;
+
+                var tmp3 = tmp2 > 90 ? tmp2 - 26 : tmp2;
+
+                return String.fromCharCode(tmp3);
+            });
+
+            return tmp1;
+        }
+
+        var tmp = rot13("SERR PBQR PNZC");
+
+        console.log(tmp);
+    })
+
+</script>
+
 </body>
 </html>
+

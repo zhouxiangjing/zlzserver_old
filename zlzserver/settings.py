@@ -112,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -131,9 +130,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = [
-  os.path.join(BASE_DIR, 'static_common'),
+  os.path.join(BASE_DIR, 'static_common/'),
 ]
 
 MEDIA_URL = '/media/'
@@ -156,10 +155,9 @@ LOGGING = {
 }
 
 import configparser
-
-_CONF_FILE = os.path.join(BASE_DIR, 'deploy/conf/conf.ini')
+CONF_FILE = os.path.join(BASE_DIR, 'deploy/conf/conf.ini')
 conf = configparser.ConfigParser()
-conf.read(_CONF_FILE, encoding="utf-8")
+conf.read(CONF_FILE, encoding="utf-8")
 remote_host = conf.get("remote_host", "host")
 
 EMAIL_USE_SSL = True
