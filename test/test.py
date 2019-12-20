@@ -9,8 +9,8 @@ import subprocess
 import os
 
 setting = {
-    'DEBUG':True,
-    'ROOT_URLCONF':__name__
+    'DEBUG': True,
+    'ROOT_URLCONF': __name__
 }
 
 settings.configure(**setting)

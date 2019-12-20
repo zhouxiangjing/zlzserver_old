@@ -8,7 +8,7 @@
     pip install -r requirement.txt      // 安装
     pip install -Ur requirements.txt    // 安装
     // 项目管理
-    python manage.py startproject zlzserver // 初始化项目
+    python django-admin.py startproject zlzserver // 初始化项目
     python manage.py startapp blog      // 创建APP
     python manage.py runserver          // 开始运行项目
     python manage.py collectstatic      // 收集静态文件

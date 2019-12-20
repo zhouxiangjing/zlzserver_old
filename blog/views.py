@@ -9,6 +9,7 @@ from django.db import transaction
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models.aggregates import Count
 from django.conf import settings
+import logging
 
 from blog.form import *
 from blog.models import *
@@ -19,11 +20,14 @@ import datetime
 import time
 import re
 from django.utils import timezone
+from blog.utils import *
+from blog.restapi_serializers import *
+from django.http import QueryDict
 
-def hash_code(s, salt='zlz'):# 加点盐
+def hash_code(s, salt='zlz'):
     h = hashlib.sha256()
     s += salt
-    h.update(s.encode()) # update方法只接收bytes类型
+    h.update(s.encode())
     return h.hexdigest()
 
 
@@ -112,11 +116,50 @@ def index(request):
 
 
 def authentication(request):
+    ret_dict = {'code': 1001, 'message': '异常！', 'user': None}
+
+    if request.method == "GET":
+        if request.session.get('is_login', None):
+            return render(request, 'blog/index.html', locals())
+        return render(request, 'blog/authentication.html', locals())
+    elif request.method == "POST":
+        if request.session.get('is_login', None):
+            ret_dict['code'] = 1000
+            ret_dict['message'] = 'OK'
+            return JsonResponse(ret_dict, json_dumps_params={'ensure_ascii': False})
+        auth_from = UserForm(request.POST)
+        if auth_from.is_valid():
+            phone = auth_from.cleaned_data['phone']
+            captcha = auth_from.cleaned_data['captcha']
+
+            d1 = timezone.datetime.fromtimestamp(timezone.datetime.now().timestamp() - 60)
+            d2 = timezone.datetime.now()
+            sms_code = SmsCode.objects.filter(phone=phone, code=captcha, updated__range=(d1, d2)).first()
+            if sms_code:
+                user_obj1, created = User.objects.update_or_create(phone=phone)
+                if user_obj1:
+                    user_obj2 = User.objects.filter(phone=phone).first()
+                    if user_obj2:
+                        request.session['is_login'] = True
+                        request.session['user_id'] = user_obj1.id
+                        request.session['user_name'] = user_obj1.username
+                        ret_dict['code'] = 1000
+                        ret_dict['message'] = '登录成功'
+                        ret_dict['user'] = str(UserSerializer(user_obj2).data)
+            else:
+                ret_dict['message'] = "验证码不存在或者已过期！"
+        else:
+            ret_dict['message'] = "请检查填写的内容！"
+        return JsonResponse(ret_dict, json_dumps_params={'ensure_ascii': False})
+
+
+def authentication2(request):
     if request.session.get('is_login', None):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
     if request.method == "GET":
         auth_from = request.META.get('HTTP_REFERER', '/')
+        logger.info("auth_from : %s", auth_from)
         if '/authentication' not in auth_from:
             request.session['auth_from'] = auth_from
         return render(request, 'blog/authentication.html', locals())
@@ -248,6 +291,7 @@ def sendsms(request):
 
     if request.method == "POST":
         try:
+            request.POST = QueryDict('phone=15236023911')
             phone = request.POST.get('phone')
             phone_re = re.compile('^1[3-9]\d{9}$')
             re_res = re.search(phone_re, phone)

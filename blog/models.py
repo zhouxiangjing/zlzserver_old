@@ -29,7 +29,7 @@ class User(models.Model):
     updated = models.DateTimeField(verbose_name='更新时间', auto_now_add=True)
 
     def __str__(self):
-        return self.username
+        return self.username + ' ' + self.phone
 
     class Meta:
         ordering = ["-created"]

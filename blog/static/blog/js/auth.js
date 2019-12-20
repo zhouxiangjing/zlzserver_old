@@ -3,6 +3,7 @@ $(document).ready(function () {
     console.log('authentication document ready')
 
     let countdown = 60;
+    let is_mobile = navigator.userAgent.toLowerCase().match(/(ipod|ipad|iphone|android|coolpad|mmp|smartphone|midp|wap|xoom|symbian|j2me|blackberry|wince)/i) != null;
 
     let csrftoken = $.cookie('csrftoken');
     function csrfSafeMethod(method) {
@@ -18,16 +19,30 @@ $(document).ready(function () {
         }
     });
 
+    $("#auth_form").ajaxForm(function (data) {
+        console.log(data)
+        if(is_mobile) {
+            AndroidFunction.login(JSON.stringify(data));
+        } else {
+            if (1000 == data.code) {
+                window.location.href = "/"
+            } else {
+                window.alert("登录失败")
+            }
+        }
+    });
 
     get_captcha = function (obj) {
 
         if (countdown == 60) {
-            console.log('zzz 1')
+
             let phone =  $('#phone').val()
-            console.log('zzz 2' + phone)
+            if(phone.length != 11) {
+                window.alert("手机号格式错误！")
+                return;
+            }
             let form_data = new FormData();
             form_data.append('phone', phone)
-            console.log(form_data)
             $.ajax({
                 url: '/sendsms/',
                 type: 'POST',

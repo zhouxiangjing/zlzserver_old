@@ -11,7 +11,6 @@ class CommentViewSet(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
-
 # class AuthView(APIView):
 #
 #     def post(self, request, *args, **kwargs):

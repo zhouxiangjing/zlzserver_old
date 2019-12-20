@@ -7,6 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "zlzserver.settings")
 django.setup()
 
 from blog.models import *
+from blog.restapi_serializers import *
 
 # from zlz.models import *
 # from zlz.serializers import DevicesSerializers
@@ -16,10 +17,8 @@ from blog.models import *
 # serializers = DevicesSerializers(queryset)
 # print(serializers.data)
 
-z = timezone.now()
+user = User.objects.filter(phone='15236023900').first()
 
-d1 = timezone.datetime.fromtimestamp(timezone.datetime.now().timestamp() - 60)
-d2 = timezone.datetime.now()
-sms_code = SmsCode.objects.filter(phone='15236023900', updated__range=(d1, d2)).first()
+val2 = UserSerializer(user).data
 
 nn = 0

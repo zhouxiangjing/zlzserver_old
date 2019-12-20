@@ -5,21 +5,26 @@ import string
 import json
 import configparser
 from django.conf import settings
+import logging
 
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkdysmsapi.request.v20170525 import SendSmsRequest
 
+# 读取配置文件
 conf = configparser.ConfigParser()
 conf.read(settings.CONF_FILE, encoding="utf-8")
 remote_host = conf.get("remote_host", "host")
 
+# 短信服务配置
 REGION = conf.get("sms", "region")
 ACCESS_KEY_ID = conf.get("sms", "access_key_id")
 ACCESS_KEY_SECRET = conf.get("sms", "access_key_secret")
 SMS_SIGN_NAME = conf.get("sms", "sign_name")
 SMS_TEMPLATE_CODE = conf.get("sms", "template_code")
-
 sms_client = AcsClient(ACCESS_KEY_ID, ACCESS_KEY_SECRET, REGION)
+
+# 日志输出配置
+logger = logging.getLogger("django")
 
 
 def ran_str(num):
